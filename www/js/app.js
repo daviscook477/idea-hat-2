@@ -24,11 +24,12 @@ angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services', 'ideas.
     controller: 'AppCtrl'
   })
 
+  //View for browsing the different categories
   .state('app.categories', {
     url: "/categories",
     views: {
       'menuContent': {
-        templateUrl: "templates/categories.html"
+        templateUrl: "templates/categories/categories.html"
       }
     }
   })

@@ -11,18 +11,23 @@ angular.module("ideas.directives", ['ideas.services'])
   var link = function($scope, element, attrs) {
     var typePerm;
     var permLevel = null;
-    var reqPermLevel = [{name: "category", level: "admin"}, {name: "idea", level:"owner"}];
+    var reqPermLevel = [{name: "category", level: "admin"}, {name: "owner", level: "owner"}];
     var hasReqPerm = false;
+    var owner;
     $scope.perms = {
       hasPerm: null
     }
     var cB = function(authData) {
-      if (IO.hasReqPerm(permLevel)) {
+      if (IO.hasReqPerm(permLevel, owner)) {
         $scope.perms.hasPerm = true;
       } else {
         $scope.perms.hasPerm = false;
       }
     };
+    attrs.$observe("owner", function(value) {
+      owner = value;
+      cB();
+    });
     attrs.$observe("perm", function(value) {
       typePerm = value;
       for (var i = 0; i < reqPermLevel.length; i++) {

@@ -34,13 +34,21 @@ angular.module("ideas.services", ['firebase'])
     syncPointersToData: function(pointerRef, dataRef, $scope, locBind) {
 
     },
+    toFObj: function(object) {
+      var data = object;
+      return {
+        data: data,
+        stamp: Firebase.ServerValue.TIMESTAMP,
+        owner: ref.getAuth()
+      };
+    },
 
     //These methods here interface with the idea-perm directive and could be used with other things if desired
     //If you change these, you will break the idea-perm directive TODO: add unit test to make sure it still works
     listenAuthChanges: function(cB) {
       authCB.push(cB);
     },
-    hasReqPerm: function(level) {
+    hasReqPerm: function(level, owner) {
       return true;
     }
   };
