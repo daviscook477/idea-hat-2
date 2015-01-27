@@ -14,6 +14,7 @@ angular.module("ideas.directives", ['ideas.services'])
     var reqPermLevel = [{name: "category", level: "admin"}, {name: "owner", level: "owner"}];
     var hasReqPerm = false;
     var owner;
+    var cBID;
     $scope.perms = {
       hasPerm: null
     }
@@ -36,7 +37,10 @@ angular.module("ideas.directives", ['ideas.services'])
         }
       }
       cB();
-      IO.listenAuthChanges(cB);
+    });
+    cBID = IO.listenAuthChanges(cB);
+    $scope.$on("destroy", function() {
+      IO.releaseAuth(cBID);
     });
   };
   return {

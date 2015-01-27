@@ -1,8 +1,8 @@
 angular.module('ideas.controllers.categories', ['ionic'])
 
-.controller("CategoriesCtrl", ['$scope', 'IO', '$ionicModal', '$ionicPopup', function($scope, IO, $ionicModal, $ionicPopup) {
+.controller("CategoriesCtrl", ['$scope', 'IO', '$ionicModal', '$ionicPopup', '$state', function($scope, IO, $ionicModal, $ionicPopup, $state) {
   var ref = IO.childRef("categories");
-  IO.syncArray(ref, $scope, "categories"); //Binds the array at ref to $Scope.categories
+  IO.syncArray(ref, $scope, "categories", "catArray"); //Binds the array at ref to $Scope.categories
   $ionicModal.fromTemplateUrl('templates/categories/modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -11,10 +11,10 @@ angular.module('ideas.controllers.categories', ['ionic'])
   });
   $scope.busy = false;
   $scope.input = {
-    text: null
+    name: null
   };
   $scope.goCategory = function(category) {
-
+    $state.go('app.category', {catID: category.$id});
   }
   $scope.showCategories = function() {
     $scope.modal.show();
@@ -26,7 +26,7 @@ angular.module('ideas.controllers.categories', ['ionic'])
   $scope.doCategories = function() {
     $scope.busy = true;
     var object = {
-      name: $scope.input.text
+      name: $scope.input.name
     };
     var write = IO.toFObj(object);
     $scope.categories.$add(write);
@@ -36,6 +36,7 @@ angular.module('ideas.controllers.categories', ['ionic'])
     });
   };
   $scope.$on('$destroy', function() {
+    IO.release("catArray");
     $scope.modal.remove();
   });
-}])
+}]);

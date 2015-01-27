@@ -1,0 +1,26 @@
+<ion-view view-title="Browsing Ideas" ng-controller="CategoryCtrl">
+  <ion-content>
+    <div class="list">
+      <div class="item item-divider" style="text-align: center">Category: {{category.data.name.$value}}</div>
+      <div ng-repeat="idea in ideas" ng-click="goIdea(idea)">
+        <idea-perm perm="owner" owner="{{idea.owner}}">
+          <div ng-switch="perms.hasPerm">
+            <div ng-switch-when="true">
+              <div class="item item-button-right">
+                {{idea.data.name}}
+                <button class="button button-clear" ng-click="showOptions($event, idea);$event.stopPropagation()">
+                  <i class="icon ion-ios7-gear"></i>
+                </button>
+            </div>
+            <div ng-switch-when="false">
+              <div class="item">
+                {{idea.data.name}}
+              </div>
+            </div>
+          </div>
+        </idea-perm>
+      </div>
+    </div>
+    <div class="button button-outline button-block" ng-click="showIdeas()">Post idea</div>
+  </ion-content>
+</ion-view>
