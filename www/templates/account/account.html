@@ -1,0 +1,7 @@
+<ion-view view-title="Account" ng-controller="AccountCtrl">
+  <ion-content>
+    <div ng-hide="login.isLogin" class="button button-positive button-block" ng-click="showLogin()">Login</div>
+    <div ng-show="login.isLogin" class="button button-assertive button-block" ng-click="showLogout()">Logout</div>
+    <div ng-hide="login.isLogin" class="button button-royal button-block" ng-click="showSignup()">Sign up</div>
+  </ion-content>
+</ion-view>

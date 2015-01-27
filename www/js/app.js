@@ -43,6 +43,15 @@ angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services', 'ideas.
     }
   })
 
+  .state('app.account', {
+    url: '/account',
+    views: {
+      'menuContent': {
+        templateUrl: "templates/account/account.html"
+      }
+    }
+  })
+
   .state('app.category', {
     url: "/category:catID",
     views: {

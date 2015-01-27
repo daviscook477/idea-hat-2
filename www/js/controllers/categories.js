@@ -5,7 +5,8 @@ angular.module('ideas.controllers.categories', ['ionic'])
   IO.syncArray(ref, $scope, "categories", "catArray"); //Binds the array at ref to $Scope.categories
   $ionicModal.fromTemplateUrl('templates/categories/modal.html', {
     scope: $scope,
-    animation: 'slide-in-up'
+    animation: 'slide-in-up',
+    focusFirstInput: true
   }).then(function(modal) {
     $scope.modal = modal;
   });
@@ -32,6 +33,9 @@ angular.module('ideas.controllers.categories', ['ionic'])
     $scope.categories.$add(write);
     $ionicPopup.alert({title: "Category created!"}).then(function() {
       $scope.busy = false;
+      $scope.input = {
+        name: null
+      }
       $scope.hideCategories();
     });
   };

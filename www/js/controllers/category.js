@@ -6,9 +6,10 @@ angular.module('ideas.controllers.category', [])
   var refCat = IO.childRef('categories.' + $stateParams.catID + ".data.name");
   IO.syncData(refCat, $scope, "category.data.name", "catID")
   IO.syncPointersToData(refIdeas, refData, $scope, "ideas", "ideaSync");
-  $ionicModal.fromTemplateUrl('templates/idea-modal.html', {
+  $ionicModal.fromTemplateUrl('templates/category/modal.html', {
     scope: $scope,
-    animation: 'slide-in-up'
+    animation: 'slide-in-up',
+    focusFirstInput: true
   }).then(function(modal) {
     $scope.modal = modal;
   });
@@ -39,6 +40,10 @@ angular.module('ideas.controllers.category', [])
     IO.childRef("categories." + $stateParams.catID + ".ideas." + key).set(true);
     $ionicPopup.alert({title: "Idea posted!"}).then(function() {
       $scope.busy = false;
+      $scope.input = {
+        name: null,
+        description: null
+      };
       $scope.hideIdeas();
     });
   };

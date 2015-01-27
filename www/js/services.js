@@ -1,6 +1,6 @@
 angular.module("ideas.services", ['firebase'])
 
-.factory('IO', ['$firebase', '$timeout', function($firebase, $timeout) {
+.factory('IO', ['$firebase', '$timeout', '$q', function($firebase, $timeout, $q) {
   var ref = new Firebase("https://idea0.firebaseio.com/");
   var authCB = [];
   ref.onAuth(function(authData) {
@@ -19,10 +19,50 @@ angular.module("ideas.services", ['firebase'])
       }
       return curRef;
     },
+    //Obtains a reference to the firebase
     getRef: function() { //TODO: If an object is synced multiple times rather than creating a new synced object I could return the same one (does angularfire already do this?)
       return ref;
     },
-    //Utility methods for syncing data
+
+    //User manipulation methods
+    logout: function() {
+      ref.unauth();
+    },
+
+    login: function(email, password) {
+      var user = {
+        email: email,
+        password: password
+      };
+      var promise = $q.defer(); //Promises. Woot! We have to return a promise because we don't know when the firebase will finish authenticating the user.
+      ref.authWithPassword(user, function(error, authData) { //Login to the firebase
+        if (error) { //They couldn't login
+          promise.reject(error);
+        } else { //They logged in sucessfully
+          promise.resolve(authData);
+        }
+      });
+      return promise.promise;
+    },
+
+    //Signs a user into the firebase. Returns a promise that tells when it completes and if it was sucessful or not
+    signup: function(email, password) {
+      var user = {
+        email: email,
+        password: password
+      };
+      var promise = $q.defer(); //Create a promise that will be returned to the user when we know if the firebase created the user
+      ref.createUser(user, function(error) { //Create the user
+        if (error === null) { //The user was successfully created
+          promise.resolve(); //Resolve the promise
+        } else { //They did not sucessfully signup
+          promise.reject(error); //Reject the promise with an error
+        }
+      });
+      return promise.promise;
+    },
+
+    //Methods for syncing data
     syncData: function(syncRef, $scope, locBind, name) {
       var sync = $firebase(syncRef);
       var syncObj = sync.$asObject();
@@ -55,6 +95,7 @@ angular.module("ideas.services", ['firebase'])
       });
       objs[name] = {pointerRef: pointerRef, dataRef: dataRef};
     },
+
     //Converts an object into firebase form by adding an owner and a timestamp
     toFObj: function(object) {
       var data = object;
@@ -71,6 +112,8 @@ angular.module("ideas.services", ['firebase'])
         owner: owner
       };
     },
+
+    //Cleanup methods
     //This must be called to clean up a synced pointer
     releasePointerSync: function(name) {
       objs[name].pointerRef.off();
@@ -84,6 +127,8 @@ angular.module("ideas.services", ['firebase'])
       objs[name] = null;
       console.log("releasing: " + name)
     },
+
+    //TODO: this stuff is actually redundant. I can use the angularfire $firebaseAuth to put a reference to the authentication in the root scope
 
     //These methods here interface with the idea-perm directive and could be used with other things if desired
     //If you change these, you will break the idea-perm directive TODO: add unit test to make sure it still works
