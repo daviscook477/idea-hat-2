@@ -1,7 +1,7 @@
 {
   "name": "idea-hat-2",
-  "version": "1.0.0",
-  "description": "idea-hat-2: An Ionic project",
+  "version": "0.0.1",
+  "description": "idea-hat-2",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^0.7.1",
