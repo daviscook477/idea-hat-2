@@ -1,8 +1,13 @@
 <ion-view view-title="Browsing Ideas" ng-controller="IdeasCtrl">
   <ion-content>
     <div class="list">
-      <div class="item" ng-repeat="idea in ideas">
+      <div class="card" ng-repeat="idea in ideas">
+        <div class="item item-divider">
         {{idea.data.name}}
+        </div>
+        <div class="item">
+          {{idea.data.description}}
+        </div>
       </div>
     </div>
   </ion-content>

@@ -46,7 +46,9 @@ angular.module("ideas.services", ['firebase'])
         for (param in datas) {
           dataRef.child(param).on("value", function(snapshot) {
             $timeout(function() {
-              $scope[locBind][snapshot.key()] = snapshot.val();
+              var obj = snapshot.val();
+              obj.$id = snapshot.key();
+              $scope[locBind][snapshot.key()] = obj;
             });
           });
         }

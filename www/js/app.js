@@ -34,6 +34,15 @@ angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services', 'ideas.
     }
   })
 
+  .state('app.comments', {
+    url: "/comments:ideaID",
+    views: {
+      "menuContent": {
+        templateUrl: "templates/comments/comments.html"
+      }
+    }
+  })
+
   .state('app.category', {
     url: "/category:catID",
     views: {

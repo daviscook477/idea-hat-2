@@ -1,10 +1,10 @@
 angular.module('ideas.controllers.category', [])
 
-.controller('CategoryCtrl', ['$scope', 'IO', '$stateParams', '$ionicModal', '$ionicPopup', function($scope, IO, $stateParams, $ionicModal, $ionicPopup) {
+.controller('CategoryCtrl', ['$scope', 'IO', '$stateParams', '$ionicModal', '$ionicPopup', '$state', function($scope, IO, $stateParams, $ionicModal, $ionicPopup, $state) {
   var refIdeas = IO.childRef('categories.' + $stateParams.catID + ".ideas");
   var refData = IO.childRef("ideas");
   var refCat = IO.childRef('categories.' + $stateParams.catID + ".data.name");
-  $scope.category = IO.syncData(refCat, $scope, "category.data.name", "catID")
+  IO.syncData(refCat, $scope, "category.data.name", "catID")
   IO.syncPointersToData(refIdeas, refData, $scope, "ideas", "ideaSync");
   $ionicModal.fromTemplateUrl('templates/idea-modal.html', {
     scope: $scope,
@@ -18,6 +18,7 @@ angular.module('ideas.controllers.category', [])
     description: null
   };
   $scope.goIdea = function(idea) {
+    $state.go('app.comments', {ideaID: idea.$id});
     //TODO: idea state
   }
   $scope.showIdeas = function() {

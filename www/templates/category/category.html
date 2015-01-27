@@ -1,6 +1,10 @@
 <ion-view view-title="Browsing Ideas" ng-controller="CategoryCtrl">
+  <div class="bar bar-subheader">
+    <h2 class="title">Category: {{category.data.name.$value}}</h2>
+  </div>
   <ion-content>
     <div class="list">
+      <!-- This thing here can't be seen. The only reason it is still here is such that the rest of the stuff can be seen TODO: fix this problem -->
       <div class="item item-divider" style="text-align: center">Category: {{category.data.name.$value}}</div>
       <div ng-repeat="idea in ideas" ng-click="goIdea(idea)">
         <idea-perm perm="owner" owner="{{idea.owner}}">
@@ -11,6 +15,7 @@
                 <button class="button button-clear" ng-click="showOptions($event, idea);$event.stopPropagation()">
                   <i class="icon ion-ios7-gear"></i>
                 </button>
+              </div>
             </div>
             <div ng-switch-when="false">
               <div class="item">
@@ -21,6 +26,6 @@
         </idea-perm>
       </div>
     </div>
-    <div class="button button-outline button-block" ng-click="showIdeas()">Post idea</div>
+    <div class="button button-royal button-block" ng-click="showIdeas()">Post idea</div>
   </ion-content>
 </ion-view>
