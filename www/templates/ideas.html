@@ -1,13 +1,24 @@
 <ion-view view-title="Browsing Ideas" ng-controller="IdeasCtrl">
   <ion-content>
     <div class="list">
-      <div class="card" ng-repeat="idea in ideas">
-        <div class="item item-divider">
-        {{idea.data.name}}
-        </div>
-        <div class="item">
-          {{idea.data.description}}
-        </div>
+      <div ng-repeat="idea in ideas">
+        <idea-perm perm="owner" owner="{{idea.owner}}">
+          <div ng-switch="perms.hasPerm">
+            <div ng-switch-when="true">
+              <div class="item item-button-right">
+                {{idea.data.name}}
+                <button class="button button-clear" ng-click="showOptions($event, idea);$event.stopPropagation()">
+                  <i class="icon ion-ios7-gear"></i>
+                </button>
+              </div>
+            </div>
+            <div ng-switch-when="false">
+              <div class="item">
+                {{idea.data.name}}
+              </div>
+            </div>
+          </div>
+        </idea-perm>
       </div>
     </div>
   </ion-content>
