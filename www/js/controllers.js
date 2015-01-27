@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('ideas.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
@@ -33,16 +33,12 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
+.controller('IdeasCtrl', ['$scope', 'IO', function($scope, IO) {
+  var ref = IO.childRef("ideas");
+  IO.syncArray(ref, $scope, "ideas"); //Binds the array at ref to $scope.ideas
+}])
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+.controller("CategoriesCtrl", ['$scope', 'IO', function($scope, IO) {
+  var ref = IO.childRef("categories");
+  IO.syncArray(ref, $scope, "categories"); //Binds the array at ref to $Scope.categories
+}])
