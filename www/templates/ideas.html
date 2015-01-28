@@ -1,7 +1,7 @@
 <ion-view view-title="Browsing Ideas" ng-controller="IdeasCtrl">
   <ion-content>
     <div class="list">
-      <div ng-repeat="idea in ideas">
+      <div ng-repeat="idea in ideas" ng-click="goIdea(idea)">
         <idea-perm perm="owner" owner="{{idea.owner}}">
           <div ng-switch="perms.hasPerm">
             <div ng-switch-when="true">

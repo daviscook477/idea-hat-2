@@ -20,7 +20,6 @@ angular.module('ideas.controllers.category', [])
   };
   $scope.goIdea = function(idea) {
     $state.go('app.comments', {ideaID: idea.$id});
-    //TODO: idea state
   }
   $scope.showIdeas = function() {
     $scope.modal.show();
