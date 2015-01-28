@@ -14,6 +14,7 @@ angular.module('ideas.controllers.account', [])
     if (authData != null) { //When a user auths we change a parameter that determines if there is a logged in user and we register a callback for changes in that users parameters
       $scope.login.isLogin = true;
       $scope.login.auth = authData;
+      console.log(authData.uid);
       IO.syncData(refAccount.child(authData.uid), $scope, 'userParams', 'paramBind'); //This binds $scope.userParams to the parameters of the user
     } else {
       $scope.login.isLogin = false;
@@ -63,6 +64,7 @@ angular.module('ideas.controllers.account', [])
     $scope.busy.login = false;
   };
   var loginSucCB = function(authData) {
+    console.log("login good");
     $ionicPopup.alert({
       title: 'Login succeeded!'
     }).then(function() {
@@ -75,6 +77,7 @@ angular.module('ideas.controllers.account', [])
     });
   };
   var loginFailCB = function(error) {
+    console.log("login bad");
     $ionicPopup.alert({
       title: 'Login failed!'
     }).then(function() {
@@ -84,7 +87,7 @@ angular.module('ideas.controllers.account', [])
   };
   $scope.doLogin = function() {
     $scope.busy.login = true;
-    console.log("doing login");
+    console.log("doing login, email is " + $scope.input.login.email + " password is " + $scope.input.login.password);
     IO.login($scope.input.login.email, $scope.input.login.password).then(loginSucCB, loginFailCB);
   };
   $scope.showSignup = function() {
@@ -141,7 +144,6 @@ angular.module('ideas.controllers.account', [])
     var myPopup = $ionicPopup.show({
     template: '<label class="input"><input type="text" ng-model="input.screenName" placeholder="{{userParams.screenName}}"></label>',
     title: 'Screen Name',
-    subTitle: 'Enter a new screen name',
     scope: $scope,
     buttons: [
       {
@@ -153,6 +155,7 @@ angular.module('ideas.controllers.account', [])
         type: 'button-royal',
         onTap: function(e) {
           //TODO: push the screen name to the firebase
+          $scope.userParams.screenName = $scope.input.screenName;
         }
       }
     ]

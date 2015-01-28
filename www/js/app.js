@@ -70,5 +70,5 @@ angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services', 'ideas.
     }
   })
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/ideas');
+  $urlRouterProvider.otherwise('/app/categories');
 });

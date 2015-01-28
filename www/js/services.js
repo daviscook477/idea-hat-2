@@ -37,11 +37,14 @@ angular.module("ideas.services", ['firebase'])
         email: email,
         password: password
       };
+      console.log("logging in " + email + " " + password);
       var promise = $q.defer(); //Promises. Woot! We have to return a promise because we don't know when the firebase will finish authenticating the user.
       ref.authWithPassword(user, function(error, authData) { //Login to the firebase
         if (error) { //They couldn't login
+          console.log("error at fbase");
           promise.reject(error);
         } else { //They logged in sucessfully
+          console.log("succ at fbase");
           promise.resolve(authData);
         }
       });
@@ -125,7 +128,12 @@ angular.module("ideas.services", ['firebase'])
       console.log("releasing " + name)
     },
     //This must be called on anything that is synced in order to not waste resources
+    //Returns -1 if the thing doesn't exist
     release: function(name) {
+      console.log("called to realse " + name)
+      if (objs[name] == null) { //User == so undefined = null
+        return -1;
+      }
       objs[name].$destroy();
       objs[name] = null;
       console.log("releasing: " + name)
