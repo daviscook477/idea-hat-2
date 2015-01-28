@@ -8,35 +8,7 @@ angular.module("ideas.services", ['firebase'])
       authCB[param](authData);
     }
   });
-  var objs = {};
-  var params = { //Set params to default
-    screenName: null
-  };
-  //The callback for setting user parameters
-  var userParams = function(authData) {
-    if (authData !== null) {
-      var userID = authData.uid;
-      ref.child("users").child(userID).on("value", function(snapshot) { //Method for settings all user parameters
-        var theObj = snapshot.val();
-        if (theObj !== null) {
-          if (theObj.screenName !== null) { //Here we check for the screen name
-            params.screenName = theObj.screenName;
-          } else {
-            params.screenName = null; //set to default
-          }
-          //TODO: obtain parameters
-        } else {
-          params = { //Change params to defaults
-            screenName: null
-          };
-        }
-      });
-    } else {
-      params = { //back to default
-        screenName: null
-      };
-    }
-  };
+  var objs = {}; //The different things registered in the service
   var service = {
     //It allows you to obtain values of and set values of parameters
     queryParam: function(param) {
@@ -180,6 +152,8 @@ angular.module("ideas.services", ['firebase'])
     },
     hasReqPerm: function(level, owner) {
       return true;
+      //TODO: here what we want to do is sync an object for listening to changes in user auth
+      //Then we can check against that stuff
       console.log("checking if " + owner + " has " + level + " permissions");
     }
   };

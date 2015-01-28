@@ -7,23 +7,22 @@ angular.module('ideas.controllers.account', [])
     isLogin: false,
     auth: null
   };
+
   //This here is all of the users parameters like screen name
   $scope.userParams = null;
   var cB = function(authData) { //Here we listen for changes in user auth
-    refAccount.off(cBUser);
-    if (authData != null) {
+    IO.release('paramBind'); //Release the previous param listener (now we could have a different usser)
+    if (authData != null) { //When a user auths we change a parameter that determines if there is a logged in user and we register a callback for changes in that users parameters
       $scope.login.isLogin = true;
       $scope.login.auth = authData;
-      refAccount.child(authData.uid).on("value", function(snapshot) {
-        userParams = snapshot.val();
-      });
+      IO.syncData(refAccount.child(authData.uid), $scope, 'userParams', 'paramBind'); //This binds $scope.userParams
     } else {
       $scope.login.isLogin = false;
       $scope.login.auth = null;
       userParams = null;
     }
   };
-  var authID = IO.listenAuthChanges(cB);
+  var authID = IO.listenAuthChanges(cB); //Register the auth listener
   $scope.modal = {
     login: null,
     signup: null,
@@ -85,6 +84,7 @@ angular.module('ideas.controllers.account', [])
   };
   $scope.doLogin = function() {
     $scope.busy.login = true;
+    console.log("doing login");
     IO.login($scope.input.login.email, $scope.input.login.password).then(loginSucCB, loginFailCB);
   };
   $scope.showSignup = function() {
@@ -138,8 +138,9 @@ angular.module('ideas.controllers.account', [])
   };
   //Methods for editing properties
   $scope.popupScreenName = function() {
-    $ionicPopup.show({title: "Test!"});
+    $ionicPopup.show({title: "Test!"}); //TODO:
   };
+
   $scope.$on('destroy', function() {
     IO.releaseAuth(authID);
     $scope.modal.signup.remove();
