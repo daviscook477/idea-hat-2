@@ -62,6 +62,10 @@ angular.module("ideas.services", ['firebase'])
       return promise.promise;
     },
 
+    setUpUser: function() {
+      
+    },
+
     //Methods for syncing data
     syncData: function(syncRef, $scope, locBind, name) {
       var sync = $firebase(syncRef);

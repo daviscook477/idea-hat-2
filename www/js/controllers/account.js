@@ -2,6 +2,7 @@ angular.module('ideas.controllers.account', [])
 
 .controller('AccountCtrl', ['$scope', 'IO', '$ionicModal', '$ionicPopup', function($scope, IO, $ionicModal, $ionicPopup) {
   var ref = IO.childRef('users'); //TODO: stuff
+
   $scope.login = { //This here takes care of determining if the user is logged in
     isLogin: false
   };
@@ -15,7 +16,7 @@ angular.module('ideas.controllers.account', [])
   var authID = IO.listenAuthChanges(cB);
   $scope.modal = {
     login: null,
-    signup: null
+    signup: null,
   };
   $ionicModal.fromTemplateUrl('templates/account/login-modal.html', {
     scope: $scope,
@@ -33,7 +34,7 @@ angular.module('ideas.controllers.account', [])
   });
   $scope.busy = {
     login: false,
-    signup: false
+    signup: false,
   };
   $scope.input = {
     login: {

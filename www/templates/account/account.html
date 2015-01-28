@@ -1,7 +1,20 @@
 <ion-view view-title="Account" ng-controller="AccountCtrl">
   <ion-content>
-    <div ng-hide="login.isLogin" class="button button-positive button-block" ng-click="showLogin()">Login</div>
-    <div ng-show="login.isLogin" class="button button-assertive button-block" ng-click="showLogout()">Logout</div>
+    <div ng-hide="login.isLogin" class="button button-royal button-block" ng-click="showLogin()">Login</div>
     <div ng-hide="login.isLogin" class="button button-royal button-block" ng-click="showSignup()">Sign up</div>
+    <div ng-show="login.isLogin" class="button button-assertive button-block" ng-click="showLogout()">Logout</div>
+    <div class="list">
+      <div class="item item-divider">Device Settings</div>
+      <!-- TODO: device settings -->
+    </div>
+    <div class="list" ng-show="login.isLogin">
+      <div class="item item-divider">Account Settings</div>
+      <div class="item item-button-right">
+        Screen Name: {{settings.current.screenName}}
+        <button class="button button-clear" ng-click="popupScreenName()">
+          <i class="icon ion-ios7-gear"></i>
+        </button>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

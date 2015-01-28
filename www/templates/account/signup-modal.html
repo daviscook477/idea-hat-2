@@ -1,5 +1,5 @@
 <ion-modal-view ng-keypress="$event.keyCode == 13 && !busy.signup && doSignup()"> <!-- This code is bad but whatever -->
-  <ion-header-bar>
+  <ion-header-bar class="bar bar-energized">
     <h1 class="title">Signup</h1>
   </ion-header-bar>
     <ion-content>
@@ -11,7 +11,7 @@
           <input type="password" ng-model="input.signup.password" placeholder="Password">
         </label>
     </div>
-    <div class="button button-block button-balanced" ng-click="!busy.signup && doSignup()">Submit</div>
-    <div class="button button-block button-light" ng-click="hideSignup()">Cancel</div>
+    <div class="button button-block button-royal" ng-click="!busy.signup && doSignup()">Submit</div>
+    <div class="button button-block button-stable" ng-click="hideSignup()">Cancel</div>
     </ion-content>
 </ion-modal-view>
