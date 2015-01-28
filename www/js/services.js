@@ -10,14 +10,8 @@ angular.module("ideas.services", ['firebase'])
   });
   var objs = {}; //The different things registered in the service
   var service = {
-    //It allows you to obtain values of and set values of parameters
-    queryParam: function(param) {
-      return params[param];
-    },
 
-    changeParam: function(param, value) {
-      params[param] = value;
-    },
+    //TODO: add a sync object for checking the current user and seeing if they are things like admin such that permissions can be checked
 
     //Utility method for converting a string to a child reference of the firebase
     childRef: function(loc) {
@@ -157,6 +151,5 @@ angular.module("ideas.services", ['firebase'])
       console.log("checking if " + owner + " has " + level + " permissions");
     }
   };
-  service.listenAuthChanges(userParams); //Listen for changes such that user params can be updated
   return service;
 }])

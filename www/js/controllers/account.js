@@ -1,8 +1,7 @@
 angular.module('ideas.controllers.account', [])
 
 .controller('AccountCtrl', ['$scope', 'IO', '$ionicModal', '$ionicPopup', function($scope, IO, $ionicModal, $ionicPopup) {
-  var refAccount = IO.childRef('users'); //TODO: stuff
-  //Stuff for editing auth
+  var refAccount = IO.childRef('users'); //Just a base reference to the firebase
   $scope.login = { //This here takes care of determining if the user is logged in
     isLogin: false,
     auth: null
@@ -15,7 +14,7 @@ angular.module('ideas.controllers.account', [])
     if (authData != null) { //When a user auths we change a parameter that determines if there is a logged in user and we register a callback for changes in that users parameters
       $scope.login.isLogin = true;
       $scope.login.auth = authData;
-      IO.syncData(refAccount.child(authData.uid), $scope, 'userParams', 'paramBind'); //This binds $scope.userParams
+      IO.syncData(refAccount.child(authData.uid), $scope, 'userParams', 'paramBind'); //This binds $scope.userParams to the parameters of the user
     } else {
       $scope.login.isLogin = false;
       $scope.login.auth = null;
@@ -53,7 +52,8 @@ angular.module('ideas.controllers.account', [])
     signup: {
       email: null,
       password: null
-    }
+    },
+    screenName: null
   };
   $scope.showLogin = function() {
     $scope.modal.login.show();
@@ -137,9 +137,29 @@ angular.module('ideas.controllers.account', [])
     })
   };
   //Methods for editing properties
-  $scope.popupScreenName = function() {
-    $ionicPopup.show({title: "Test!"}); //TODO:
+  $scope.popupScreenName = function() { //This popup edits the screen name for the user
+    var myPopup = $ionicPopup.show({
+    template: '<label class="input"><input type="text" ng-model="input.screenName" placeholder="{{userParams.screenName}}"></label>',
+    title: 'Screen Name',
+    subTitle: 'Enter a new screen name',
+    scope: $scope,
+    buttons: [
+      {
+        text: 'Cancel',
+        type: 'button-stable'
+      },
+      {
+        text: 'Submit',
+        type: 'button-royal',
+        onTap: function(e) {
+          //TODO: push the screen name to the firebase
+        }
+      }
+    ]
+  });
   };
+
+  //TODO: add new properties of the user to change or whatever
 
   $scope.$on('destroy', function() {
     IO.releaseAuth(authID);
