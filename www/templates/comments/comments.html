@@ -3,10 +3,10 @@
     <div class="list">
       <div class="item item-divider">Idea</div>
       <div class="card">
-        <div class="item item-divider">
+        <div class="item item-text-wrap item-divider">
           {{idea.data.name}}
         </div>
-        <div class="item">
+        <div class="item item-text-wrap">
           {{idea.data.description}}
         </div>
       </div>
@@ -15,14 +15,14 @@
         <idea-perm perm="owner" owner="{{comment.owner}}">
           <div ng-switch="perms.hasPerm">
             <div ng-switch-when="true">
-              <div class="item item-button-right">
+              <div class="item item-text-wrap item-button-right">
                 {{comment.data.text}}
                 <button class="button button-clear" ng-click="showOptions($event, idea);$event.stopPropagation()">
                   <i class="icon ion-ios7-gear"></i>
                 </button>
             </div>
             <div ng-switch-when="false">
-              <div class="item">
+              <div class="item item-text-wrap">
                 {{comment.data.text}}
               </div>
             </div>
