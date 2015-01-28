@@ -3,6 +3,7 @@ angular.module('ideas.controllers.account', [])
 .controller('AccountCtrl', ['$scope', 'IO', '$ionicModal', '$ionicPopup', function($scope, IO, $ionicModal, $ionicPopup) {
   var ref = IO.childRef('users'); //TODO: stuff
 
+  //Stuff for editing auth
   $scope.login = { //This here takes care of determining if the user is logged in
     isLogin: false
   };
@@ -110,7 +111,7 @@ angular.module('ideas.controllers.account', [])
       $scope.busy.signup = false;
       $scope.modal.signup.hide();
     });
-  }
+  };
   $scope.doSignup = function() {
     $scope.busy.signup = false;
     IO.signup($scope.input.signup.email, $scope.input.signup.password).then(signupSucCB, signupFailCB);
@@ -125,6 +126,11 @@ angular.module('ideas.controllers.account', [])
         //Do nothing because they don't want to logout
       }
     })
+  };
+
+  //Methods for editing properties
+  $scope.popupScreenName = function() {
+    $ionicPopup.show({title: "Test!"});
   };
   $scope.$on('destroy', function() {
     IO.releaseAuth(authID);
