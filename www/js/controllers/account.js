@@ -1,17 +1,26 @@
 angular.module('ideas.controllers.account', [])
 
 .controller('AccountCtrl', ['$scope', 'IO', '$ionicModal', '$ionicPopup', function($scope, IO, $ionicModal, $ionicPopup) {
-  var ref = IO.childRef('users'); //TODO: stuff
-
+  var refAccount = IO.childRef('users'); //TODO: stuff
   //Stuff for editing auth
   $scope.login = { //This here takes care of determining if the user is logged in
-    isLogin: false
+    isLogin: false,
+    auth: null
   };
-  var cB = function(authData) {
+  //This here is all of the users parameters like screen name
+  $scope.userParams = null;
+  var cB = function(authData) { //Here we listen for changes in user auth
+    refAccount.off(cBUser);
     if (authData != null) {
       $scope.login.isLogin = true;
+      $scope.login.auth = authData;
+      refAccount.child(authData.uid).on("value", function(snapshot) {
+        userParams = snapshot.val();
+      });
     } else {
       $scope.login.isLogin = false;
+      $scope.login.auth = null;
+      userParams = null;
     }
   };
   var authID = IO.listenAuthChanges(cB);
@@ -127,7 +136,6 @@ angular.module('ideas.controllers.account', [])
       }
     })
   };
-
   //Methods for editing properties
   $scope.popupScreenName = function() {
     $ionicPopup.show({title: "Test!"});

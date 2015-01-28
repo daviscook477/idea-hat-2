@@ -9,7 +9,44 @@ angular.module("ideas.services", ['firebase'])
     }
   });
   var objs = {};
+  var params = { //Set params to default
+    screenName: null
+  };
+  //The callback for setting user parameters
+  var userParams = function(authData) {
+    if (authData !== null) {
+      var userID = authData.uid;
+      ref.child("users").child(userID).on("value", function(snapshot) { //Method for settings all user parameters
+        var theObj = snapshot.val();
+        if (theObj !== null) {
+          if (theObj.screenName !== null) { //Here we check for the screen name
+            params.screenName = theObj.screenName;
+          } else {
+            params.screenName = null; //set to default
+          }
+          //TODO: obtain parameters
+        } else {
+          params = { //Change params to defaults
+            screenName: null
+          };
+        }
+      });
+    } else {
+      params = { //back to default
+        screenName: null
+      };
+    }
+  };
   var service = {
+    //It allows you to obtain values of and set values of parameters
+    queryParam: function(param) {
+      return params[param];
+    },
+
+    changeParam: function(param, value) {
+      params[param] = value;
+    },
+
     //Utility method for converting a string to a child reference of the firebase
     childRef: function(loc) {
       var childs = loc.split(".");
@@ -146,6 +183,6 @@ angular.module("ideas.services", ['firebase'])
       console.log("checking if " + owner + " has " + level + " permissions");
     }
   };
-
+  service.listenAuthChanges(userParams); //Listen for changes such that user params can be updated
   return service;
 }])
