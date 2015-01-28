@@ -6,23 +6,23 @@
           <div ng-switch="perms.hasPerm">
             <div ng-switch-when="true">
               <div class="card">
-                <div class="item item-divider item-button-right">
+                <div class="item item-text-wrap item-divider item-button-right">
                   {{idea.data.name}}
                   <button class="button button-clear" ng-click="showOptions($event, idea);$event.stopPropagation()">
                     <i class="icon ion-ios7-gear"></i>
                   </button>
                 </div>
-                <div class="item">
+                <div class="item item-text-wrap">
                   {{idea.data.description}}
                 </div>
               </div>
             </div>
             <div ng-switch-when="false">
               <div class="card">
-                <div class="item item-divider">
+                <div class="item item-text-wrap item-divider">
                   {{idea.data.name}}
                 </div>
-                <div class="item">
+                <div class="item item-text-wrap">
                   {{idea.data.description}}
                 </div>
             </div>
