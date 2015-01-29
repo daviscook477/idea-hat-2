@@ -11,7 +11,6 @@ angular.module("ideas.directives", ['ideas.services'])
   var link = function($scope, element, attrs) {
     var typePerm;
     var permLevel = null;
-    var reqPermLevel = [{name: "category", level: "admin"}, {name: "owner", level: "owner"}];
     var hasReqPerm = false;
     var owner;
     var cBID;
@@ -19,7 +18,7 @@ angular.module("ideas.directives", ['ideas.services'])
       hasPerm: null
     }
     var cB = function(authData) {
-      if (IO.hasReqPerm(permLevel, owner)) {
+      if (IO.hasReqPerm(typePerm, owner)) {
         $scope.perms.hasPerm = true;
       } else {
         $scope.perms.hasPerm = false;
@@ -31,11 +30,6 @@ angular.module("ideas.directives", ['ideas.services'])
     });
     attrs.$observe("perm", function(value) {
       typePerm = value;
-      for (var i = 0; i < reqPermLevel.length; i++) {
-        if (reqPermLevel[i].name === typePerm) {
-          permLevel = reqPermLevel[i].level;
-        }
-      }
       cB();
     });
     cBID = IO.listenAuthChanges(cB);

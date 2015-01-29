@@ -10,6 +10,7 @@
                 <button class="button button-clear" ng-click="showOptions($event, category);$event.stopPropagation()">
                   <i class="icon ion-ios7-gear"></i>
                 </button>
+              </div>
             </div>
             <div ng-switch-when="false">
               <div class="item item-text-wrap">
@@ -20,8 +21,8 @@
         </idea-perm>
       </div>
     </div>
-    <idea-perm perm="category">
-      <div class="button button-royal button-block" ng-click="showCategories()" ng-show="perms.hasPerm">Create category</div>
+    <idea-perm perm="admin">
+      <div class="button button-royal button-block" ng-click="showCategories()" ng-hide="perms.hasPerm">Create category</div>
     </idea-perm>
   </ion-content>
 </ion-view>

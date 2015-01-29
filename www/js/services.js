@@ -9,6 +9,22 @@ angular.module("ideas.services", ['firebase'])
     }
   });
   var objs = {}; //The different things registered in the service
+  var userParams = {};
+  ref.onAuth(function(authData) { //this mess of code might work -- TODO:test this clusterfuck of code
+    //Register the callback for storing the user params
+    if (userParams !== null) {
+      //userParams.$destroy();
+    }
+    if (authData !== null) {
+      var paramCB = function(snapshot) {
+        userParams = snapshot.val();
+      };
+      ref.child("users").off("value", paramCB);
+      ref.child("users").child(authData.uid).on("value", paramCB); //Set up a callback for the params
+    } else {
+      userParams = null;
+    }
+  });
   var service = {
 
     //TODO: add a sync object for checking the current user and seeing if they are things like admin such that permissions can be checked
@@ -34,6 +50,14 @@ angular.module("ideas.services", ['firebase'])
     //Obtains a reference to the firebase
     getRef: function() { //TODO: If an object is synced multiple times rather than creating a new synced object I could return the same one (does angularfire already do this?)
       return ref;
+    },
+
+    getAuthUID: function() {
+      var curAuth = ref.getAuth();
+      if (curAuth === null) {
+        return null;
+      }
+      return curAuth.uid;
     },
 
     //User manipulation methods
@@ -161,8 +185,21 @@ angular.module("ideas.services", ['firebase'])
     releaseAuth: function(cBID) {
       authCB[cBID] = null;
     },
-    hasReqPerm: function(level, owner) {
-      return true;
+    hasReqPerm: function(perm, owner) { //And test this mess too
+      if (perm === "owner") {
+        if (owner === service.getAuthUID()) {
+          return true;
+        }
+      }
+      if (perm === "admin") {
+        if (userParams !== null) {
+          if (userParams.admin === true) {
+            return true;
+          }
+        }
+        //HM: I should set user properties in the service rather than in account XD
+      }
+      return false;
       //TODO: here what we want to do is sync an object for listening to changes in user auth
       //Then we can check against that stuff
       console.log("checking if " + owner + " has " + level + " permissions");

@@ -2,6 +2,10 @@
   <ion-content>
     <div ng-hide="login.isLogin" class="button button-royal button-block" ng-click="showLogin()">Login</div>
     <div ng-hide="login.isLogin" class="button button-royal button-block" ng-click="showSignup()">Sign up</div>
+    <div ng-show="login.isLogin" class="list">
+      <div class="item item-divider" style="text-align:center">Current Login</div>
+      <div class="item">Email: {{login.auth.password.email}}</div> <!-- so this isn't working -->
+    </div>
     <div ng-show="login.isLogin" class="button button-assertive button-block" ng-click="showLogout()">Logout</div>
     <div class="list">
       <div class="item item-divider">Device Settings</div>

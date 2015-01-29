@@ -23,6 +23,7 @@ angular.module('ideas.controllers.account', [])
     }
   };
   var authID = IO.listenAuthChanges(cB); //Register the auth listener
+  cB(IO.getRef().getAuth()); //Call the callback in order to obtain the current auth
   $scope.modal = {
     login: null,
     signup: null,
