@@ -13,6 +13,15 @@ angular.module("ideas.services", ['firebase'])
 
     //TODO: add a sync object for checking the current user and seeing if they are things like admin such that permissions can be checked
 
+    curUserRef: function() {
+      var curAuth = ref.getAuth();
+      console.log(curAuth.uid);
+      if (curAuth !== null) {
+        return ref.child("users").child(curAuth.uid);
+      }
+      return null;
+    },
+
     //Utility method for converting a string to a child reference of the firebase
     childRef: function(loc) {
       var childs = loc.split(".");

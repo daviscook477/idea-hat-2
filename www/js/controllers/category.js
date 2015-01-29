@@ -36,6 +36,7 @@ angular.module('ideas.controllers.category', [])
     };
     var write = IO.toFObj(object);
     var key = IO.childRef("ideas").push(write).key();
+    IO.curUserRef().child("ideas").child(key).set(true);
     IO.childRef("categories." + $stateParams.catID + ".ideas." + key).set(true);
     $ionicPopup.alert({title: "Idea posted!"}).then(function() {
       $scope.busy = false;

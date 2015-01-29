@@ -31,6 +31,7 @@ angular.module('ideas.controllers.comments', [])
     };
     var write = IO.toFObj(object);
     var key = IO.childRef("comments").push(write).key();
+    IO.curUserRef().child("comments").child(key).set(true);
     IO.childRef("ideas." + $stateParams.ideaID + ".comments." + key).set(true);
     $ionicPopup.alert({title: "Comment posted!"}).then(function() {
       $scope.busy = false;
