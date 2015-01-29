@@ -123,11 +123,11 @@ angular.module("ideas.services", ['firebase'])
         datas = snapshot.val();
         $scope[locBind] = {};
         for (param in datas) {
-          dataRef.child(param).on("value", function(snapshot) {
+          dataRef.child(param).on("value", function(snapshot2) {
             $timeout(function() {
-              var obj = snapshot.val();
-              obj.$id = snapshot.key();
-              $scope[locBind][snapshot.key()] = obj;
+              var obj = snapshot2.val();
+              obj.$id = snapshot2.key();
+              $scope[locBind][snapshot2.key()] = obj;
             });
           });
         }
@@ -145,10 +145,24 @@ angular.module("ideas.services", ['firebase'])
     //LocFindPointer is the attribute of the ideas list that links to the data, in this case: owner
     //LocFindData is the data of the dataRef that we want: in this case it is screen Name
     //So the final result of that call should bind the screen Names of the idea pointers to a list
-    syncPointerToDataAtData: function(pointerRef, dataRef, $scope, locBindScope, locFindPointer, locFindData) {
+    syncPointerToDataAtData: function(pointerRef, dataRef, finalRef, $scope, locBindScope, locFindData, locFindFinal) {
       //TODO: write this code
       //It will be difficult!!!!
       //And I'm not entirely sure what I'm doing with it
+      var datas = {};
+      pointerRef.on("value", function(snapshot) { //when the pointers change
+        datas = snapshot.val();
+        $scope[locBindScope] = {};
+        for (param in datas) {
+          dataRef.child(param).child(locFindData).on("value", function(snapshot2) {
+            var datas2 = snapshot2.val(); //for the example this is the value of owner
+            finalRef.child(datas2).on("value", function(snapshot3) {
+              var obj = snapshot3.val();
+              $scope[locBindScope][param] = obj;
+            })
+          }
+        }
+      })
     },
 
     //Converts an object into firebase form by adding an owner and a timestamp
