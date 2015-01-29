@@ -146,7 +146,9 @@ angular.module("ideas.services", ['firebase'])
     //LocFindData is the data of the dataRef that we want: in this case it is screen Name
     //So the final result of that call should bind the screen Names of the idea pointers to a list
     syncPointerToDataAtData: function(pointerRef, dataRef, $scope, locBindScope, locFindPointer, locFindData) {
-
+      //TODO: write this code
+      //It will be difficult!!!!
+      //And I'm not entirely sure what I'm doing with it
     },
 
     //Converts an object into firebase form by adding an owner and a timestamp
