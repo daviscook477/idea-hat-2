@@ -159,10 +159,10 @@ angular.module("ideas.services", ['firebase'])
             finalRef.child(datas2).on("value", function(snapshot3) {
               var obj = snapshot3.val();
               $scope[locBindScope][param] = obj;
-            })
-          }
+            });
+          });
         }
-      })
+      });
     },
 
     //Converts an object into firebase form by adding an owner and a timestamp
