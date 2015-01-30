@@ -31,7 +31,7 @@ angular.module("ideas.services", ['firebase'])
 
     curUserRef: function() {
       var curAuth = ref.getAuth();
-      console.log(curAuth.uid);
+      //console.log(curAuth.uid); bad code
       if (curAuth !== null) {
         return ref.child("users").child(curAuth.uid);
       }
@@ -122,14 +122,26 @@ angular.module("ideas.services", ['firebase'])
       pointerRef.on("value", function(snapshot) {
         datas = snapshot.val();
         $scope[locBind] = {};
-        for (param in datas) {
-          dataRef.child(param).on("value", function(snapshot2) {
+        var createFunction = function(param) {
+          return function(snapshot2) {
             $timeout(function() {
               var obj = snapshot2.val();
               obj.$id = snapshot2.key();
-              $scope[locBind][snapshot2.key()] = obj;
+              console.log(locBind+"."+param);
+              if ($scope[locBind][param] == undefined) {
+                $scope[locBind] = {
+                  [param]: {
+                    data: obj
+                  } //somehow we need to add these things to the $scope
+                };
+              } else {
+                $scope[locBind][param].data = obj;
+              }
             });
-          });
+          };
+        }
+        for (param in datas) {
+          dataRef.child(param).on("value", createFunction(param));
         }
       });
       objs[name] = {pointerRef: pointerRef, dataRef: dataRef};
@@ -145,24 +157,41 @@ angular.module("ideas.services", ['firebase'])
     //LocFindPointer is the attribute of the ideas list that links to the data, in this case: owner
     //LocFindData is the data of the dataRef that we want: in this case it is screen Name
     //So the final result of that call should bind the screen Names of the idea pointers to a list
-    syncPointerToDataAtData: function(pointerRef, dataRef, finalRef, $scope, locBindScope, locFindData, locFindFinal) {
+    syncPointerToDataAtData: function(pointerRef, dataRef, finalRef, $scope, locBindScope, locBindScope2, locFindData, locFindFinal) {
       //TODO: write this code
       //It will be difficult!!!!
       //And I'm not entirely sure what I'm doing with it
       var datas = {};
       pointerRef.on("value", function(snapshot) { //when the pointers change
         datas = snapshot.val();
-        $scope[locBindScope] = {};
-        for (param in datas) {
-          dataRef.child(param).child(locFindData).on("value", function(snapshot2) {
+        var createFunction = function(param) {
+          return function(snapshot2) {
             var datas2 = snapshot2.val(); //for the example this is the value of owner
-            finalRef.child(datas2).on("value", function(snapshot3) {
-              var obj = snapshot3.val();
-              $scope[locBindScope][param] = obj;
-            })
-          }
+            //console.log(datas2);
+            if (datas2 !== null) {
+              finalRef.child(datas2).child(locFindFinal).on("value", function(snapshot3) {
+                $timeout(function() {
+                  var obj = snapshot3.val();
+                  console.log(param);//console.log(obj); //The issue is that it needs to use a specific value of param
+                  console.log(locBindScope+"."+param+"."+locBindScope2);
+                  if ($scope[locBindScope][param] == undefined) {
+                    $scope[locBindScope][param] = {
+                      [locBindScope2]: obj
+                    };
+                  } else {
+                    $scope[locBindScope][param][locBindScope2] = obj;
+                  }
+
+                  //console.log("we found"+$scope[locBindScope][param][locBindScope2]);
+                });
+              });
+            }
+          };
+        };
+        for (param in datas) {
+          dataRef.child(param).child(locFindData).on("value", createFunction(param));
         }
-      })
+      });
     },
 
     //Converts an object into firebase form by adding an owner and a timestamp

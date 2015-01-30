@@ -12,23 +12,23 @@
             <div ng-switch-when="true">
               <div class="card">
                 <div class="item item-text-wrap item-divider item-button-right">
-                  {{idea.data.name}}
+                  {{idea.data.data.name}} - {{idea.screenName}}
                   <button class="button button-clear" ng-click="showOptions($event, idea);$event.stopPropagation()">
                     <i class="icon ion-ios7-gear"></i>
                   </button>
                 </div>
                 <div class="item item-text-wrap">
-                  {{idea.data.description}}
+                  {{idea.data.data.description}}
                 </div>
               </div>
             </div>
             <div ng-switch-when="false">
               <div class="card">
                 <div class="item item-divider item-text-wrap">
-                  {{idea.data.name}}
+                  {{idea.data.data.name}} - {{idea.screenName}}
                 </div>
                 <div class="item item-text-wrap">
-                  {{idea.data.description}}
+                  {{idea.data.data.description}}
                 </div>
               </div>
             </div>

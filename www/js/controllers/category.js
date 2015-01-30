@@ -6,6 +6,10 @@ angular.module('ideas.controllers.category', [])
   var refCat = IO.childRef('categories.' + $stateParams.catID + ".data.name");
   IO.syncData(refCat, $scope, "category.data.name", "catID")
   IO.syncPointersToData(refIdeas, refData, $scope, "ideas", "ideaSync");
+  //Sync user screen names
+  $scope.ideas = {};
+  var refUsers = IO.childRef("users");
+  IO.syncPointerToDataAtData(refIdeas, refData, refUsers, $scope, "ideas", "screenName", "owner", "screenName");
   $ionicModal.fromTemplateUrl('templates/category/modal.html', {
     scope: $scope,
     animation: 'slide-in-up',
@@ -36,7 +40,10 @@ angular.module('ideas.controllers.category', [])
     };
     var write = IO.toFObj(object);
     var key = IO.childRef("ideas").push(write).key();
-    IO.curUserRef().child("ideas").child(key).set(true);
+    var curUserRef = IO.curUserRef();
+    if (curUserRef !== null) {
+      curUserRef.child("ideas").child(key).set(true);
+    }
     IO.childRef("categories." + $stateParams.catID + ".ideas." + key).set(true);
     $ionicPopup.alert({title: "Idea posted!"}).then(function() {
       $scope.busy = false;
