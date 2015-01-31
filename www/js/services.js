@@ -221,13 +221,18 @@ angular.module("ideas.services", ['firebase'])
           return true;
         }
       }
-      if (perm === "admin") {
+      if (perm === "admin") { //This doesn't work (something must not work correctly in the userParams)
         if (userParams !== null) {
           if (userParams.admin === true) {
             return true;
           }
         }
         //HM: I should set user properties in the service rather than in account XD
+      }
+      if (perm === "login") {
+        if (ref.getAuth() !== null) {
+          return true;
+        }
       }
       return false;
       //TODO: here what we want to do is sync an object for listening to changes in user auth

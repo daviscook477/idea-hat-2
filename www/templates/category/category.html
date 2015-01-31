@@ -36,6 +36,8 @@
         </idea-perm>
       </div>
     </div>
-    <div class="button button-royal button-block" ng-click="showIdeas()">Post idea</div>
+    <idea-perm perm="login">
+      <div class="button button-royal button-block" ng-show="perms.hasPerm" ng-click="showIdeas()">Post idea</div>
+    </idea-perm>
   </ion-content>
 </ion-view>
