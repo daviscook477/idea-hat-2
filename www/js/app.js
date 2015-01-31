@@ -1,4 +1,4 @@
-angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services', 'ideas.directives'])
+angular.module('ideas', ['ionic', 'ideas.controllers', 'ideas.services', 'ideas.directives', 'ideas.factories'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

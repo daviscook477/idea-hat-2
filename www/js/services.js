@@ -116,6 +116,7 @@ angular.module("ideas.services", ['firebase'])
       $scope[locBind] = syncArray;
       objs[name] = syncArray;
     },
+    //this really confusing method syncs a pointer
     syncPointersToData: function(pointerRef, dataRef, $scope, locBind, name) {
       console.log("creating a pointer from " + pointerRef.key() + " to " + dataRef.key() + " where the data is bound to $scope." + locBind + " registered at " + name);
       var datas = {};
@@ -133,36 +134,6 @@ angular.module("ideas.services", ['firebase'])
         }
       });
       objs[name] = {pointerRef: pointerRef, dataRef: dataRef};
-    },
-    //This method here allows syncing:
-    //An idea has an owner:
-    //Which has a screenName as an attribute in the list of users
-    //So if you have a list of idea pointers in the firebase,
-    //The pointerRef is a reference to that location in the firebase
-    //The dataRef is a reference to the users list in the firebase
-    //The $scope is where to bind it to
-    //locBindScope is the attribute of the scope to bind the list to
-    //LocFindPointer is the attribute of the ideas list that links to the data, in this case: owner
-    //LocFindData is the data of the dataRef that we want: in this case it is screen Name
-    //So the final result of that call should bind the screen Names of the idea pointers to a list
-    syncPointerToDataAtData: function(pointerRef, dataRef, finalRef, $scope, locBindScope, locFindData, locFindFinal) {
-      //TODO: write this code
-      //It will be difficult!!!!
-      //And I'm not entirely sure what I'm doing with it
-      var datas = {};
-      pointerRef.on("value", function(snapshot) { //when the pointers change
-        datas = snapshot.val();
-        $scope[locBindScope] = {};
-        for (param in datas) {
-          dataRef.child(param).child(locFindData).on("value", function(snapshot2) {
-            var datas2 = snapshot2.val(); //for the example this is the value of owner
-            finalRef.child(datas2).on("value", function(snapshot3) {
-              var obj = snapshot3.val();
-              $scope[locBindScope][param] = obj;
-            });
-          });
-        }
-      });
     },
 
     //Converts an object into firebase form by adding an owner and a timestamp
