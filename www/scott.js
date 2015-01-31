@@ -9,7 +9,7 @@ app.controller('MainCtrl', function(Idea, $scope){
   $scope.idea = Idea('-JgwJo8ygTcV20ckLsQ7');
   $scope.idea.$loaded(function(ideaSnap){
       console.log('idea:', ideaSnap);
-      console.log('author:', ideaSnap.author().screenName);
+      ideaSnap.author().then(function(author){console.log(author);$scope.idea.author = author});
   })
 });
 var mainRef = new Firebase("https://idea0.firebaseio.com/");
